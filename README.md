@@ -1,6 +1,6 @@
 # 👀 EmailToEncryptedMailto
 
-[ProcessWire](https://processwire.com) site module to turn text emails like `info@domain.com` into encrypted mailto links like `<a href="javascript:cdc('dw:ckfv:e.frzfdw:esyfd','Ihre AnfrageV')">info<span class="cdc">(</span>@<span class="cdc">)</span>domain<span class="cdc">(</span>.<span class="cdc">)</span>com</a>` to hide them from spam bots. Once clicked, the link will be decrypted by the Javascript method `cdc.min.js` autoloaded by the module to your template.
+[ProcessWire](https://processwire.com) site module to turn text emails like **info@domain.com** into encrypted mailto links like **<a href="javascript:cdc('dw:ckfv:e.frzfdw:esyfd','Ihre AnfrageV')">info<span class="cdc">(</span>@<span class="cdc">)</span>domain<span class="cdc">(</span>.<span class="cdc">)</span>com</a>** to hide them from spam bots. Once clicked, the link will be decrypted by the Javascript method `cdc.min.js` autoloaded by the module to your template.
 
 ## Installation
 
@@ -12,7 +12,7 @@ Once the module files are copied in place, login to your ProcessWire backend and
 
 ### CSS styles
 
-By default paranthesis are wrapped around `@` and `.` characters in the visible mailto link parts to trick spam bots. Those paranthesis "(@)" and "(.)" are hidden by default from human beeings via the CSS class "cdc" added by the module. If you want to display the paranthesis or change other parts of the <span class="cdc">, just modify the modules CSS file.
+By default paranthesis are wrapped around `@` and `.` characters via span tags in the visible mailto link parts to trick spam bots. Those paranthesis "(@)" and "(.)" are hidden by default from human beeings via the CSS class "cdc" added by the module. If you want to display the paranthesis or change other parts of the <span class="cdc">, just modify the modules CSS file.
 
 ```CSS
 .cdc {
