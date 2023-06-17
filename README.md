@@ -1,6 +1,6 @@
-# 👀 EmailToEncryptedMailto
+# 📧 EmailToEncryptedMailto
 
-[ProcessWire](https://processwire.com) site module to turn text emails like `info@domain.com` into encrypted mailto links like **<a href="javascript:cdc('dw:ckfv:e.frzfdw:esyfd','Ihre AnfrageV')">info<span class="cdc">(</span>@<span class="cdc">)</span>domain<span class="cdc">(</span>.<span class="cdc">)</span>com</a>** to hide them from spam bots. Once clicked, the link will be decrypted by the Javascript method defined in *cdc.min.js* autoloaded by the module to your template.
+[ProcessWire](https://processwire.com)  module to turn text mails like **info<span>@</span>domain.com** into encrypted mailto links **&lt;a href="javascript:cdc('dw:ckfv:e.frzfdw:esyfd','Ihre AnfrageV')"&gt;info<span class="cdc">(</span>@<span class="cdc">)</span>domain<span class="cdc">(</span>.<span class="cdc">)</span>com&lt;/a&gt;** to hide them from spam bots. Once clicked, the link will be decrypted by the Javascript method defined in *cdc.min.js* automatically linked to your template head section.
 
 ## Installation
 
@@ -15,7 +15,7 @@ Once the module files are copied in place, login to your ProcessWire backend and
 
 ### CSS styles
 
-By default paranthesis are wrapped around `@` and `.` characters enclosed in span tags in the visible mailto link part to trick spam bots. Those paranthesis "(@)" and "(.)" are hidden by default from human beeings via the CSS class "cdc" added to the span tags by the module. If you want to display the paranthesis or change other parts of the <span class="cdc">, just modify the modules CSS file.
+By default the characters `[@.]` are wrapped in paranthesis added via span tags in the visible mailto part to trick spam bots. The paranthesis `()` are hidden by default from human beeings via the CSS class *cdc* automatically added to your template by the module. If you want to display the paranthesis or change other parts of the **&lt;span class="cdc"&gt;(&lt;/span&gt;**, just adapt the modules CSS file to your needs.
 
 ```CSS
 .cdc {
