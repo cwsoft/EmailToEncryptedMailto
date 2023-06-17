@@ -4,7 +4,7 @@
 
 ## Installation
 
-Download attached Zip file from [Releases section](https://github.com/cwsoft/pwEmailToEncryptedMailto/releases) to your site/modules/EmailToEncryptMailto. Alternatively you can clone the repository into your Processwire site/modules folder via the following command `git clone https://github.com/cwsoft/pwEmailToEncryptedMailto.git ./EmailToEncryptedMailto`.
+Download attached Zip file from [Releases section](https://github.com/cwsoft/pwEmailToEncryptedMailto/releases) to your site/modules and rename it to `EmailToEncryptMailto`. Alternatively you can clone the repository into your Processwire site/modules folder via the following command `git clone https://github.com/cwsoft/pwEmailToEncryptedMailto.git ./EmailToEncryptedMailto`.
 
 Once the module files are copied in place, login to your ProcessWire backend and reload the modules. Afterwards the `EmailToEncryptMailto` module should show up in your backend ready to be `installed` by ProcessWire. Install it as usual, then view a page with a simple text email in your frontend to see the module in action.
 
