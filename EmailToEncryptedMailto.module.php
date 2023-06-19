@@ -33,7 +33,7 @@ class EmailToEncryptedMailto extends WireData implements Module {
 	 * @return void
 	 */
 	protected function process(HookEvent $event) : void {
-		// Only proceed if modules javascript and CSS decrypt file exists.
+		// Only proceed if modules javascript decrypt file exists.
 		$html = $this->addModuleFilesIntoHead($event->return);
 		if ($html == $event->return) return;
 
@@ -58,15 +58,12 @@ class EmailToEncryptedMailto extends WireData implements Module {
 	private function addModuleFilesIntoHead(string $html) : string {
 		// Only proceed if module files exist.
 		if (!is_readable(__DIR__ . DIRECTORY_SEPARATOR . 'js' . DIRECTORY_SEPARATOR . 'cdc.min.js')) return $html;
-		if (!is_readable(__DIR__ . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'cdc.min.css')) return $html;
 
 		// Inject required module CSS and Javascript files into pages <head> section.
 		$jsPath = basename(__DIR__) . '/js/cdc.min.js';
 		$jsLink = "<script async src='{$this->config->urls->siteModules}/{$jsPath}'></script>";
-		$cssPath = basename(__DIR__) . '/css/cdc.min.css';
-		$cssLink = "<link rel='stylesheet' type='text/css' href='{$this->config->urls->siteModules}/{$cssPath}' />";
 
-		return str_replace('</head>', $cssLink . "\n" . $jsLink . "\n</head>", $html);
+		return str_replace('</head>', $jsLink . "\n</head>", $html);
 	}
 
 	/**
@@ -117,9 +114,9 @@ class EmailToEncryptedMailto extends WireData implements Module {
 			$cipher .= $allowedCharacters[$index];
 		}
 
-		// Replace "@" by "(@)" and "." by "(.)" and wrap brackets into hidden span tags.
-		$eMailAtPart = '<span class="cdc">(</span>@<span class="cdc">)</span>';
-		$eMailDotParts = '<span class="cdc">(</span>.<span class="cdc">)</span>';
+		// Replace "@" by "(@)" and "." by "(.)" and wrap brackets in hidden span tags.
+		$eMailAtPart = '<span hidden>(</span>@<span hidden>)</span>';
+		$eMailDotParts = '<span hidden>(</span>.<span hidden>)</span>';
 		$eMailDisplayed = str_replace(array('@', '.'), array($eMailAtPart, $eMailDotParts), $email);
 
 		// Build clickable encrypted Javascript mailto link.
