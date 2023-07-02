@@ -13,5 +13,5 @@
     "outDir": "js"
   },
   "exclude": ["node_modules"],
-  "filesGlob": ["source/typescript/**/*.ts"]
+  "filesGlob": ["source/**/*.ts"]
 }
