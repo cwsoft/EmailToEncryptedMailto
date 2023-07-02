@@ -1,2 +1,5 @@
 # VS Code project settings
 .vscode/
+node_modules/
+**/*.css.map
+**/*.js.map

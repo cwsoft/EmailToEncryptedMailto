@@ -57,10 +57,10 @@ class EmailToEncryptedMailto extends WireData implements Module {
 	 */
 	private function addModuleFilesIntoHead(string $html) : string {
 		// Only proceed if module files exist.
-		if (!is_readable(__DIR__ . DIRECTORY_SEPARATOR . 'js' . DIRECTORY_SEPARATOR . 'cdc.min.js')) return $html;
+		if (!is_readable(__DIR__ . DIRECTORY_SEPARATOR . 'js' . DIRECTORY_SEPARATOR . 'cdc.js')) return $html;
 
 		// Inject required module CSS and Javascript files into pages <head> section.
-		$jsPath = basename(__DIR__) . '/js/cdc.min.js';
+		$jsPath = basename(__DIR__) . '/js/cdc.js';
 		$jsLink = "<script async src='{$this->config->urls->siteModules}/{$jsPath}'></script>";
 
 		return str_replace('</head>', $jsLink . "\n</head>", $html);
