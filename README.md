@@ -1,6 +1,6 @@
 # 📧 EmailToEncryptedMailto
 
-[ProcessWire](https://processwire.com) module to turn text mails like **info<span>@</span>domain.com** into encrypted mailto links `<a href="javascript:cdc('dw:ckfv:e.frzfdw:esyfd','Ihre AnfrageV')">info<span hidden>(</span>@<span hidden>)</span>domain<span hidden>(</span>.<span hidden>)</span></a>` to hide them from spam bots. Once clicked, the link will be decrypted by the Javascript method defined in _cdc.min.js_ automatically linked to your template head section.
+[ProcessWire](https://processwire.com) module to convert text emails and regular mailto links into encrypted mailto links like `<a href="javascript:cdc('dw:ckfv:e.frzfdw:esyfd','Ihre AnfrageV')">info<span hidden>(</span>@<span hidden>)</span>domain<span hidden>(</span>.<span hidden>)</span></a>` to hide them from spam bots. Once clicked, the link will be decrypted by the Javascript method defined in _cdc.min.js_, which gets automatically linked to your template head section.
 
 ## Installation
 
@@ -19,9 +19,9 @@ By default the characters `[@.]` are wrapped in paranthesis added via span tags 
 
 ### Language files
 
-By default mailto links add a mail subject in English (Default: "Your Request") or German ("Ihre Anfrage"). If you want to use the German language file, install it from the module installation section in the backend. Learn how to install language files or add translation files yourself by following the steps described in the [Helloworld module](https://processwire.com/modules/helloworld/) by Ryan Cramer.
+Enrypted mailto links automatically get a mail subject "Your Request" (Default), respective "Ihre Anfrage" (German). If you want to use the German language file, you need to install it from the module installation section in the backend. Learn how to install language files or add translation files yourself by following the steps described in the [Helloworld module](https://processwire.com/modules/helloworld/) by Ryan Cramer.
 
-Apart from the language, no customizations are available. Idea was to keep this module as clean and lean as possible. If you need additional features or want to customize stuff to your needs, you may want to test out other E-Mail obfuscation modules available in the official [ProcessWire modules catalog](https://processwire.com/modules/category/email/).
+Apart from the language file, no customizations are available. Idea was to keep this module as clean and lean as possible. If you need additional features or want to customize stuff to your needs, you may want to test out other E-Mail obfuscation modules available in the official [ProcessWire modules catalog](https://processwire.com/modules/category/email/).
 
 Have fun
 cwsoft

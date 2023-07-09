@@ -1,55 +1,53 @@
 <?php namespace ProcessWire;
 
 /**
- * Class to turn emails into encrypted mailto links on the fly.
+ * Class to turn text emails and regular mailto links into encrypted mailto links.
  * Autoloaded with ProcessWire and ready to use without configuration.
  */
 class EmailToEncryptedMailto extends WireData implements Module {
 	/**
-	 * Array with emails found in the active page html.
-	 * @var array
-	 */
-	private $emails = array();
- 
-	/**
-  	* Regex pattern used to scan html for email addresses.
+  	* Regex pattern to extract text emails from text excluding emails inside link tags.
   	* @var string
   	*/
-	private $pattern = '#(?<email>[\._a-z0-9-]+@[\._a-z0-9-]+)#i';
+	private $patternEmail = '#<a [^>]+>.*?</a>(*SKIP)(*FAIL)|(?<email>[\._a-z0-9-]+@[\._a-z0-9-]+)#i';
 
 	/**
-  	* Add hook after ProcessWire page is rendered to modifiy the active page html.
+  	* Regex pattern to extract regular mailto links from text.
+  	* @var string
+  	*/
+	private $patternMailto = '#<a href=([\'"])mailto:(?<email>.*?)\1>(?<text>.*?)</a>#i';
+
+	/**
+  	* Register hook after ProcessWire page is rendered to replaceEmails into encrypted mailto links.
   	* @return void
   	*/
 	public function ready() : void {
-    	// Limit to frontend templates only.
-		if ($this->page->template == 'admin') return;
-		$this->addHookAfter('Page::render', $this, 'process');
+		if ($this->page->template != 'admin') {
+			$this->addHookAfter('Page::render', $this, 'encryptEmails');
+		}
   	}
 
 	/**
-	 * Scans active page for emails and converts them into encrypted mailto links.
+	 * Scans page for text emails and regular mailto links and converts them into encrypted mailto links.
 	 * @param \ProcessWire\HookEvent $event
 	 * @return void
 	 */
-	protected function process(HookEvent $event) : void {
-		// Only proceed if modules javascript decrypt file exists.
+	protected function encryptEmails(HookEvent $event) : void {
+		// Only proceed if actual page html contains at least one '@' char.
+		if (strpos($event->return, '@') == -1) return;
+
+		// Only proceed if javascript decrypt file could be loaded into head.
 		$html = $this->addModuleFilesIntoHead($event->return);
 		if ($html == $event->return) return;
 
-		// Only proceed if actual page contains at least one email.
-		$this->fetchEmails($html);
-		if (empty($this->emails)) return;
+		// Replace mailto links and text emails of actual page with encrypted mailto link.
+		$html = preg_replace_callback($this->patternMailto, array($this, 'replaceMailtoLinks'), $html);
+		$html = preg_replace_callback($this->patternEmail, array($this, 'replaceTextEmails'), $html);
 
-		// Replace all emails with encrypted mailto links.
-		foreach ($this->emails as $email) {
-			$mailto = $this->createEncryptedMailtoLink($email, $subject=__('Your Request'));
-			$html = str_replace($email, $mailto, $html);
-		}
-
+		// Return modified page html.
 		$event->return = $html;
   	}
-	
+
 	/**
 	 * Helper method to add required module CSS and Javascript files into page head.
 	 * @param string $html
@@ -67,29 +65,61 @@ class EmailToEncryptedMailto extends WireData implements Module {
 	}
 
 	/**
-	 * Helper method to fetch all emails from actual page html.
-	 * @param string $text
-	 * @return void
+	 * Helper method to replace regular mailto links into encrypted mailto links.
+	 * @param array $matches
+	 * @return string
 	 */
-	private function fetchEmails(string $text) : void {
-		$this->emails = array();
-		if (!empty($text) && strpos($text, '@') > 0 && preg_match_all($this->pattern, $text, $matches)) {
-			foreach($matches['email'] as $email) {
-				if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-					$this->emails[] = $email;
-				}
-			}
+	private function replaceMailtoLinks(array $matches) : string {
+		// Extract matching string and named groups.
+		$match  = $matches[0];
+		$email = $matches['email'];
+		$mailtoText = $matches['text'];
+
+		// Extract optional subject from email part.
+		$subject = ''; 
+		$position = strpos($email, '?subject=');
+		if ($position > -1) {
+			$subject = substr($email, $position + strlen('?subject='), strlen($email));
+			$email = substr($email, 0, $position);
 		}
-		$this->emails = array_unique($this->emails);
+
+		// Only replace strings if we have a valid email.
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) return $match;
+
+		// Replace mailto link with encrypted mailto link.
+		return $this->createEncryptedMailtoLink($email, $subject, $mailtoText);
+	}
+
+	/**
+	 * Helper method to replace text emails into encrypted mailto links.
+	 * @param array $matches
+	 * @return string
+	 */
+	 private function replaceTextEmails(array $matches) : string {
+		// Extract matching string and named groups.
+		$match = $matches[0];
+		$email = $matches['email'];
+
+		// Only replace strings if we have a valid email.
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) return $match;
+
+		return $this->createEncryptedMailtoLink($email);
 	}
 
 	/**
 	 * Helper method to turn an email into an encrypted mailto link.
 	 * @param string $email
 	 * @param string $subject
+	 * @param string $mailtoText
 	 * @return string
 	 */
-	private function createEncryptedMailtoLink(string $email, string $subject) : string {
+	private function createEncryptedMailtoLink(string $email, string $subject='', string $mailtoText='') : string {
+		// Add default mailto subject if needed.
+		if (empty($subject)) $subject = sprintf(__('Your Request'));
+
+		// Use email as visible mailto part if empty.
+		if (empty($mailtoText)) $mailtoText = $email;
+
 		// String with allowed characters.
 		$allowedCharacters = 'abcdefghijklmnopqrstuvwxyz@.-_:';
 		$numberAllowedCharacters = strlen($allowedCharacters);
@@ -97,7 +127,7 @@ class EmailToEncryptedMailto extends WireData implements Module {
 		// Check user inputs and create a mailto email link.
 		$mailto = strtolower(trim($email));
 		if (strpos($mailto, 'mailto:') === false) $mailto = "mailto:$mailto";
-		
+
 		// Create random shift position for the Caesar algorithm.
 		$shift = rand(1, $numberAllowedCharacters - 1);
 		if ($mailto == '' || abs($shift) > $numberAllowedCharacters - 1) return $email;
@@ -117,10 +147,10 @@ class EmailToEncryptedMailto extends WireData implements Module {
 		// Replace "@" by "(@)" and "." by "(.)" and wrap brackets in hidden span tags.
 		$eMailAtPart = '<span hidden>(</span>@<span hidden>)</span>';
 		$eMailDotParts = '<span hidden>(</span>.<span hidden>)</span>';
-		$eMailDisplayed = str_replace(array('@', '.'), array($eMailAtPart, $eMailDotParts), $email);
+		$eMailText = str_replace(array('@', '.'), array($eMailAtPart, $eMailDotParts), $mailtoText);
 
 		// Build clickable encrypted Javascript mailto link.
-		$mailtoLink = "<a href=\"javascript:cdc('" . $cipher . "','" . $subject . chr(64 + $shift) ."')\">" .$eMailDisplayed . "</a>";
-		return $mailtoLink;		
-	}	
+		$mailtoLink = "<a href=\"javascript:cdc('" . $cipher . "','" . $subject . chr(64 + $shift) ."')\">" .$eMailText . "</a>";
+		return $mailtoLink;
+	}
 }
