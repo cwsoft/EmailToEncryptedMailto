@@ -1,17 +1,18 @@
 # 📧 EmailToEncryptedMailto
 
-[ProcessWire](https://processwire.com) module to convert text emails and regular mailto links into encrypted mailto links like `<a href="javascript:cdc('dw:ckfv:e.frzfdw:esyfd','Ihre AnfrageV')">info<span hidden>(</span>@<span hidden>)</span>domain<span hidden>(</span>.<span hidden>)</span></a>` to hide them from spam bots. Once clicked, the link will be decrypted by the Javascript method defined in _cdc.min.js_, which gets automatically linked to your template head section.
+[ProcessWire](https://processwire.com) module to convert text emails and regular mailto links into encrypted mailto links like `<a href="javascript:cdc('dw:ckfv:e.frzfdw:esyfd','Ihre AnfrageV')">
+info<span hidden>(</span>@<span hidden>)</span>domain<span hidden>(</span>.<span hidden>)</span>com</a>` to hide them from spam bots. Once clicked, the link will be decrypted by the Javascript method defined in _cdc.min.js_, which gets automatically linked to your template head section.
 
 ## Installation
 
-Download Zip file from [Github](https://github.com/cwsoft/EmailToEncryptedMailto/releases) to your site/modules folder, unzip it and rename the module folder into **EmailToEncryptMailto**. Alternatively clone the repository into your Processwire site/modules folder (recommended) using the following commands:
+Download Zip file from [Github](https://github.com/cwsoft/EmailToEncryptedMailto/releases) to your site/modules folder, unzip it and rename the module folder into **EmailToEncryptedMailto**. Alternatively clone the repository into your Processwire site/modules folder (recommended) using the following commands:
 
 ```
 cd /your_processwire_folder/site/modules
 git clone https://github.com/cwsoft/EmailToEncryptedMailto.git ./EmailToEncryptedMailto
 ```
 
-Once the module files are copied in place, login to your ProcessWire backend and reload the modules. Afterwards the **EmailToEncryptMailto** module should show up in your backend ready to be installed by ProcessWire as usual. Once installed, view a page with text email(s) in your frontend to see the module in action. You may want to install the German language file shipped with the module. For details see section Language files of the README.
+Once the module files are copied in place, login to your ProcessWire backend and reload the modules. Afterwards the **EmailToEncryptedMailto** module should show up in your backend ready to be installed by ProcessWire as usual. Once installed, view a page with text email(s) in your frontend to see the module in action. You may want to install the German language file shipped with the module. For details see section Language files of the README.
 
 ## Customization
 
