@@ -1,7 +1,15 @@
 # 📧 EmailToEncryptedMailto
 
-[ProcessWire](https://processwire.com) module to convert text emails and regular mailto links into encrypted mailto links like `<a href="javascript:cdc('dw:ckfv:e.frzfdw:esyfd','Ihre AnfrageV')">
-info<span hidden>(</span>@<span hidden>)</span>domain<span hidden>(</span>.<span hidden>)</span>com</a>` to hide them from spam bots. Once clicked, the link will be decrypted by the Javascript method defined in _cdc.min.js_, which gets automatically linked to your template head section.
+[ProcessWire](https://processwire.com) module to convert text emails and regular mailto links into encrypted mailto links to hide them from spam bots. The text email info@domain.com would turn into the following encrypted mailto link:
+
+```
+<a href="javascript:cdc('dw:ckfv:e.frzfdw:esyfd','Ihre AnfrageV')">
+   info<span hidden>(</span>@<span hidden>)</span>
+   domain<span hidden>(</span>.<span hidden>)</span>com
+</a>
+```
+
+The link will be decrypted by a Javascript method defined in _cdc.min.js_, which gets automatically linked to your template head section once the link is clicked.
 
 ## Installation
 
