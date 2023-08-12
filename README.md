@@ -9,7 +9,7 @@
 </a>
 ```
 
-The link will be decrypted by a Javascript method defined in _cdc.min.js_, which gets automatically linked to your template head section once the link is clicked.
+The link will be decrypted on click by the Javascript method _cdc_, which is automatically linked in your page head section if a email exists on that page. 
 
 ## Installation
 
