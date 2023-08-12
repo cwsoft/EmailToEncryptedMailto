@@ -1,4 +1,4 @@
-# 📧 EmailToEncryptedMailto
+# EmailToEncryptedMailto
 
 [ProcessWire](https://processwire.com) module to convert text emails and regular mailto links into encrypted mailto links to hide them from spam bots. The text email info@domain.com would turn into the following encrypted mailto link:
 
