@@ -13,14 +13,14 @@ The link will be decrypted on click by the Javascript method _cdc_, which is aut
 
 ## Installation
 
-Download Zip file from [Github](https://github.com/cwsoft/EmailToEncryptedMailto/releases) to your site/modules folder, unzip it and rename the module folder into **EmailToEncryptedMailto**. Alternatively clone the repository into your Processwire site/modules folder (recommended) using the following commands:
+Download latest module zip file via [Download button](https://processwire.com/modules/email-to-encrypted-mailto/) of the ProcessWire module page or from [Github release section](https://github.com/cwsoft/EmailToEncryptedMailto/releases) and unzip it to your site/modules folder. Ensure the module folder is named **EmailToEncryptedMailto**. Alternatively you can clone the repository into your Processwire site/modules folder (recommended way for developers) via the following commands:
 
 ```
 cd /your_processwire_folder/site/modules
 git clone https://github.com/cwsoft/EmailToEncryptedMailto.git ./EmailToEncryptedMailto
 ```
 
-Once the module files are copied in place, login to your ProcessWire backend and reload the modules. Afterwards the **EmailToEncryptedMailto** module should show up in your backend ready to be installed by ProcessWire as usual. Once installed, view a page with text email(s) in your frontend to see the module in action. You may want to install the German language file shipped with the module. For details see section Language files of the README.
+Once the module files are copied in place, login to your ProcessWire backend and reload the modules. Afterwards the **EmailToEncryptedMailto** module should show up in your backend ready to be installed by ProcessWire as usual. Once installed, view a page with email(s) in your frontend to see the module in action. You may want to install the German language file shipped with the module. For details see section Language files of the README.
 
 ## Customization
 
