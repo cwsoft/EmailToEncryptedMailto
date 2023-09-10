@@ -1,6 +1,6 @@
 {
   "name": "emailtoencryptedmailto",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "description": "[ProcessWire](https://processwire.com) module to converts text emails and regular mailto links into encrypted mailto links to hide them from spam bots.",
   "keywords": [
     "ProcessWire",
@@ -9,14 +9,14 @@
   ],
   "author": "cwsoft",
   "license": "MIT",
-  "main": "EMailToEncryptedMailto.module.php",
+  "main": "EmailToEncryptedMailto.module.php",
   "scripts": {
     "tsc": "tsc --watch",
     "build": "tsc & esbuild js/cdc.js --outdir=js --minify --allow-overwrite"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/cwsoft/pwEmailToEncryptedMailto"
+    "url": "https://github.com/cwsoft/EmailToEncryptedMailto"
   },
   "devDependencies": {
     "esbuild": "^0.18.11",

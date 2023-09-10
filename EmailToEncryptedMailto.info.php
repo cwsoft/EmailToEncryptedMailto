@@ -1,4 +1,6 @@
-<?php namespace ProcessWire;
+<?php
+
+namespace ProcessWire;
 
 /**
  * EmailToEncryptedMailto.info.php
@@ -6,10 +8,11 @@
  */
 $info = array(
     'title' => 'Email To Encrypted Mailto',
-    'summary' => 'Converts text emails and regular mailto links into encrypted mailto links.',
-    'version' => 5,
+    'summary' => 'Converts text emails and mailto links into encrypted mailto links to hide them from spam bots.',
+    'icon' => 'at',
+    'version' => '1.0.0',
     'author' => 'cwsoft',
-    'href' => 'https://github.com/cwsoft/pwEmailToEncryptedMailto',
+    'href' => 'https://github.com/cwsoft/EmailToEncryptedMailto',
     'requires' => 'PHP>=8.1',
     'autoload' => true,
 );
