@@ -15,10 +15,13 @@ class EmailToEncryptedMailto extends WireData implements Module {
 	private $patternEmail = '#<a [^>]+>.*?</a>(*SKIP)(*FAIL)|<input [^>]+>(*SKIP)(*FAIL)|(?<email>[\._a-z0-9-]+@[\._a-z0-9-]+)#i';
 
 	/**
-	 * Regex pattern to extract regular mailto links from text.
+	 * Regex pattern to extract mailto links from text.
+	 * The email address of the mailto part is captured in group <email>, the text part in group <text>.
+	 * The quote character ["'] around the mailto part is captured in group <quote>.
+	 * Optional attributes before and after the mailto part are captured in the groups <apre> and <asuf>.
 	 * @var string
 	 */
-	private $patternMailto = '#<a href=([\'"])mailto:(?<email>.*?)\1>(?<text>.*?)</a>#i';
+	private $patternMailto = '#<a\s*(?<apre>.+?)href=(?<quote>[\'"])mailto:(?<email>.*?)\k<quote>\s*(?<asuf>.+?)>(?<text>.*?)</a>#i';
 
 	/**
 	 * Register hook after ProcessWire page is rendered to replaceEmails into encrypted mailto links.
@@ -77,6 +80,8 @@ class EmailToEncryptedMailto extends WireData implements Module {
 		$match  = $matches[0];
 		$email = $matches['email'];
 		$mailtoText = $matches['text'];
+		$aPrefix = $matches['apre'];
+		$aSuffix = $matches['asuf'];
 
 		// Extract optional subject from email part.
 		$subject = '';
@@ -90,7 +95,7 @@ class EmailToEncryptedMailto extends WireData implements Module {
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) return $match;
 
 		// Replace mailto link with encrypted mailto link.
-		return $this->createEncryptedMailtoLink($email, $subject, $mailtoText);
+		return $this->createEncryptedMailtoLink($email, $subject, $mailtoText, $aPrefix, $aSuffix);
 	}
 
 	/**
@@ -112,13 +117,25 @@ class EmailToEncryptedMailto extends WireData implements Module {
 	/**
 	 * Helper method to turn an email into an encrypted mailto link.
 	 * @param string $email
-	 * @param string $subject
-	 * @param string $mailtoText
-	 * @return string
+	 * @param string $subject [optional]
+	 * @param string $mailtoText [optional]
+	 * @param string $aPrefix [optional], e.g. class="myclass"
+	 * @param string $aSuffix [optional], e.g. data-mydata="mydata"
+	 * @return string 
 	 */
-	private function createEncryptedMailtoLink(string $email, string $subject = '', string $mailtoText = ''): string {
+	private function createEncryptedMailtoLink(
+		string $email,
+		string $subject = '',
+		string $mailtoText = '',
+		string $aPrefix = '',
+		string $aSuffix = ''
+	): string {
 		// Add default mailto subject if needed.
 		if (empty($subject)) $subject = sprintf(__('Your Request'));
+
+		// Replace double quotes in optional prefix and suffix link parts.
+		$aPrefix = str_replace('"', "'", $aPrefix);
+		$aSuffix = str_replace('"', "'", $aSuffix);
 
 		// Use email as visible mailto part if empty.
 		if (empty($mailtoText)) $mailtoText = $email;
@@ -151,9 +168,10 @@ class EmailToEncryptedMailto extends WireData implements Module {
 		$eMailAtPart = '<span hidden>(</span>@<span hidden>)</span>';
 		$eMailDotParts = '<span hidden>(</span>.<span hidden>)</span>';
 		$eMailText = str_replace(array('@', '.'), array($eMailAtPart, $eMailDotParts), $mailtoText);
+		$shiftChar = chr(64 + $shift);
 
-		// Build clickable encrypted Javascript mailto link.
-		$mailtoLink = "<a href=\"javascript:cdc('" . $cipher . "','" . $subject . chr(64 + $shift) . "')\">" . $eMailText . "</a>";
+		// Build encrypted Javascript mailto link preserving optional class/id/data attributes.
+		$mailtoLink = "<a $aPrefix href=\"javascript:cdc('$cipher','$subject$shiftChar')\" $aSuffix>$eMailText</a>";
 		return $mailtoLink;
 	}
 }
