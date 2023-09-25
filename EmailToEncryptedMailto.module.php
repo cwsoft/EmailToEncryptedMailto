@@ -39,8 +39,8 @@ class EmailToEncryptedMailto extends WireData implements Module {
 	 * @return void
 	 */
 	protected function encryptEmails(HookEvent $event): void {
-		// Only proceed if actual page html contains at least one '@' char.
-		if (strpos($event->return, '@') == -1) return;
+		// Check if actual page should be skipped from encryption.
+		if ($this->skipEmailEncryption($event)) return;
 
 		// Only proceed if javascript decrypt file could be loaded into head.
 		$html = $this->addModuleFilesIntoHead($event->return);
@@ -52,6 +52,25 @@ class EmailToEncryptedMailto extends WireData implements Module {
 
 		// Return modified page html.
 		$event->return = $html;
+	}
+
+	/**
+	 * Helper function to check if actual page should be skipped from email encryption.
+	 * @return boolean
+	 */
+	private function skipEmailEncryption($event): bool {
+		// Extract pageIds to skip from module config.
+		$pageIdsToSkip = trim($this->pageIdsToSkip);
+
+		// Don't encrypt emails if page contains no '@' char or user forced to skip encryption via module config.
+		if ((strpos($event->return, '@') == -1) || ($pageIdsToSkip == '-1')) return true;
+
+		// Convert string with comma separated page IDs into array of integer values.
+		$pageIdsToSkip = strpos($pageIdsToSkip, ',') > -1 ? explode(',', $pageIdsToSkip) : [$pageIdsToSkip];
+		$pageIdsToSkip = array_map('intval', $pageIdsToSkip);
+
+		// Check if actual pageId is contained in array of pageIds to skip.
+		return in_array($this->page->id, $pageIdsToSkip);
 	}
 
 	/**

@@ -1,2 +1,4 @@
 en,default,description,file,hash
 "Your Request","Ihre Anfrage",,site/modules/EmailToEncryptedMailto/EmailToEncryptedMailto.module.php,f181060bffec9342fa598a35b7c1e1c6
+"Pages to skip from email encryption","Von der E-Mail-Verschlüsselung ausgenommene Seiten",,site/modules/EmailToEncryptedMailto/EmailToEncryptedMailtoConfig.php,c59ef60453ad953cc60c26f111790f86
+"Add pageIDs to skip separated by comma. Enter -1 to skip all pages.","Füge pageIDs der auszuschliessenden Seiten getrennt bei Komma hinzu. Gebe -1 ein um alle Seiten auszuschließen.",,site/modules/EmailToEncryptedMailto/EmailToEncryptedMailtoConfig.php,e7e7c01a426ddb7befafcd1733ef5564
