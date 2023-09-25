@@ -8,10 +8,11 @@ namespace ProcessWire;
  */
 class EmailToEncryptedMailto extends WireData implements Module {
 	/**
-	 * Regex pattern to extract text emails from text excluding emails inside link tags.
+	 * Regex pattern to extract text emails from text excluding emails inisde link tags and input fields.
+	 * Email addresses found are captured in group <email>.
 	 * @var string
 	 */
-	private $patternEmail = '#<a [^>]+>.*?</a>(*SKIP)(*FAIL)|(?<email>[\._a-z0-9-]+@[\._a-z0-9-]+)#i';
+	private $patternEmail = '#<a [^>]+>.*?</a>(*SKIP)(*FAIL)|<input [^>]+>(*SKIP)(*FAIL)|(?<email>[\._a-z0-9-]+@[\._a-z0-9-]+)#i';
 
 	/**
 	 * Regex pattern to extract regular mailto links from text.
