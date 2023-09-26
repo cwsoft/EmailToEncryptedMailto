@@ -1,6 +1,6 @@
 {
   "name": "emailtoencryptedmailto",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "[ProcessWire](https://processwire.com) module to converts text emails and regular mailto links into encrypted mailto links to hide them from spam bots.",
   "keywords": [
     "ProcessWire",

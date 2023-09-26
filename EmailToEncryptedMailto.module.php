@@ -16,12 +16,11 @@ class EmailToEncryptedMailto extends WireData implements Module {
 
 	/**
 	 * Regex pattern to extract mailto links from text.
-	 * The email address of the mailto part is captured in group <email>, the text part in group <text>.
-	 * The quote character ["'] around the mailto part is captured in group <quote>.
-	 * Optional attributes before and after the mailto part are captured in the groups <apre> and <asuf>.
+	 * Mail address of the mailto link is captured in group <email>, the mailto text part in group <text>.
+	 * Optional attributes within mailto link like id/class/data-attr are captured in the groups <apre> and <asuf>.
 	 * @var string
 	 */
-	private $patternMailto = '#<a\s*(?<apre>.+?)href=(?<quote>[\'"])mailto:(?<email>.*?)\k<quote>\s*(?<asuf>.+?)>(?<text>.*?)</a>#i';
+	private $patternMailto = '#<a\s*(?<apre>[^>]+)\s*\bhref=([\'"])mailto:(?<email>.*?)\2(?<asuf>[^>]*?)>(?<text>.*?)</a>#i';
 
 	/**
 	 * Register hook after ProcessWire page is rendered to replaceEmails into encrypted mailto links.
