@@ -103,7 +103,7 @@ class EmailToEncryptedMailto extends WireData implements Module {
 
 		// Extract optional subject from email part.
 		$subject = '';
-		$position = strpos($email, '?subject=');
+		$position = stripos($email, '?subject=');
 		if ($position > -1) {
 			$subject = substr($email, $position + strlen('?subject='), strlen($email));
 			$email = substr($email, 0, $position);
